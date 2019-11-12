@@ -19,6 +19,8 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember This Computer')
     submit = SubmitField("Continue")
 
+class PasswordResetForm(FlaskForm):
+    email = StringField('Email', validators=DataRequired(), Email()])
 # Add validators for username and email, same as registration
 class AccountForm(FlaskForm):
     # Personal Info

@@ -9,6 +9,6 @@ class Config:
         SECRET_KEY = 'test'
         DEBUG = True
     # Database configs
-    SQLALCHEMY_DATABASE_URI = "";
-    SQLALCHEMY_TRACK_MODIFICATIONS = "";
+    SQLALCHEMY_DATABASE_URI = "sqlite:///test.db";
+    SQLALCHEMY_TRACK_MODIFICATIONS = False;
 

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, url_for, flash, redirect, request, abort, current_app
-from webapp.main.forms import RegistrationForm, LoginForm
+from webapp.main.forms import RegistrationForm, LoginForm, PasswordResetForm
 from flask_login import login_user, current_user, logout_user, login_required
 # import webapp.main.utils as utils
 import datetime
@@ -35,3 +35,8 @@ def login():
         print(form.password.data)
         return redirect(url_for('main.home'))
     return render_template('login.html', form=form)
+'''
+@main.route('/reset_request', methods=['GET', 'POST'])
+def reset_request():
+    form = PasswordResetForm()
+'''
