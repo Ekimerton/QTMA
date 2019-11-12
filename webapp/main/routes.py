@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, url_for, flash, redirect, request, abort, current_app
 from webapp.main.forms import RegistrationForm, LoginForm, PasswordResetForm
 from flask_login import login_user, current_user, logout_user, login_required
-# import webapp.main.utils as utils
 import datetime
+from webapp.models import User, Team
+from webapp import db, bcrypt
 
 main = Blueprint('main', __name__)
 
@@ -18,11 +19,11 @@ def register():
         return redirect(url_for('main.home'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        print(form.firstname.data)
-        print(form.password.data)
-        print(form.email.data)
-        print(form.password.data)
-        return redirect(url_for("main.register"))
+        hashed_pass = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        new_user = User(first_name=form.firstname.data, last_name=form.lastname.data, email=form.email.data, password=hashed_pass)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for("main.login"))
     return render_template('register.html', form=form)
 
 @main.route('/login', methods=['GET', 'POST'])
@@ -31,10 +32,19 @@ def login():
         return redirect(url_for('main.home'))
     form = LoginForm()
     if form.validate_on_submit():
-        print(form.email.data)
-        print(form.password.data)
-        return redirect(url_for('main.home'))
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for("main.home"))
+        flash(f"Login unsuccessful. Please check your email and password!", "danger")
     return render_template('login.html', form=form)
+
+@main.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("main.home"))
+
 '''
 @main.route('/reset_request', methods=['GET', 'POST'])
 def reset_request():

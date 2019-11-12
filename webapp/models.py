@@ -25,4 +25,5 @@ class User(db.Model, UserMixin):
 
 class Team(db.Model):
     id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(20), nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
