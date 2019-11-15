@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, url_for, flash, redirect, request, abort, current_app
-from webapp.main.forms import RegistrationForm, LoginForm, PasswordResetForm, AccountForm
+from webapp.main.forms import RegistrationForm, LoginForm, PasswordResetForm, PersonalForm, PictureForm, TeamForm, CareerForm
 from flask_login import login_user, current_user, logout_user, login_required
 import datetime
 from webapp.models import User, Team
@@ -48,13 +48,18 @@ def logout():
 @main.route("/profile")
 @login_required
 def profile():
-    form = AccountForm()
-    if form.validate_on_submit():
+    personal_form = PersonalForm()
+    picture_form = PictureForm()
+    team_form = TeamForm()
+    career_form = CareerForm()
+
+    if personal_form.validate_on_submit():
         if form.picture.data:
             pass
         pass
-    form.first_name.data = current_user.first_name
-    form.last_name.data = current_user.last_name
+
+    personal_form.first_name.data = current_user.first_name
+    personal_form.last_name.data = current_user.last_name
     title = "Profile of your mom!"
     return render_template('profile.html', form=form, title=title)
 
