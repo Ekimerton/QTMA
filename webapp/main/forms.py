@@ -39,7 +39,6 @@ class PasswordResetForm(FlaskForm):
             raise ValidationError("That email address isn't registered!")
 
 class AccountForm(FlaskForm):
-    username = StringField("Username", validators=[DataRequired(), Length(min=5, max=15)])
     email = StringField("Email Address", validators=[DataRequired(), Email()])
     first_name = StringField("First Name", validators=[DataRequired()])
     last_name = StringField("Last Name", validators=[DataRequired()])
