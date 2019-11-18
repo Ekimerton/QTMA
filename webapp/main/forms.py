@@ -61,7 +61,7 @@ class PictureForm(FlaskForm):
     submit = SubmitField("Save Settings")
 
 class TeamForm(FlaskForm):
-    team_name = SelectField('Team Name', validators=[DataRequired()])
+    team_name = SelectField('Team Name', validators=[])
     submit = SubmitField("Save Settings")
 
 class CareerForm(FlaskForm):

@@ -45,7 +45,7 @@ def logout():
     logout_user()
     return redirect(url_for("main.home"))
 
-@main.route("/profile")
+@main.route("/profile", methods=['GET', 'POST'])
 @login_required
 def profile():
     personal_form = PersonalForm()
@@ -53,15 +53,17 @@ def profile():
     team_form = TeamForm()
     career_form = CareerForm()
 
+    team_form.team_name.choices = [('1', 'Team 1'), ('2', 'Team 2'), ('3', 'Test Team')]
     if personal_form.validate_on_submit():
         if form.picture.data:
             pass
         pass
-
+    if team_form.validate_on_submit():
+        print(team_form.team_name.data)
     personal_form.first_name.data = current_user.first_name
     personal_form.last_name.data = current_user.last_name
     title = "Profile of your mom!"
-    return render_template('profile.html', form=form, title=title)
+    return render_template('profile.html', personal_form=personal_form, picture_form=picture_form, team_form=team_form, career_form=career_form, title=title)
 
 '''
 @main.route('/reset_request', methods=['GET', 'POST'])

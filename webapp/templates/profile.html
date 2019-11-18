@@ -72,14 +72,24 @@
 										<h6 class="text-primary font-weight-bold m-0">Projects</h6>
 									</div>
 									<div class="card-body text-center shadow">
-										<form>
+										<form method="POST" action="">
+											{{ team_form.hidden_tag() }}
 											<div class="form-group">
 												<label for="address"><strong>Team Name</strong></label>
-												<select class="form-control form-control form-control-sm custom-select custom-select-sm"><option value="10" selected="">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option>
-												</select>
+												{% if team_form.team_name.errors %}
+												{{ team_form.team_name(class="form-control form-control-user is-invalid") }}
+												<div class="invalid-feedback">
+													{% for error in team_form.team_name.errors %}
+													<span>{{ error }}</span>
+													{% endfor %}
+												</div>
+												{% else %}
+												{{ team_form.team_name(class="form-control form-control-sm custom-select custom-select-sm") }}
+												{% endif %}
 											</div>
-											<div
-												class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button></div>
+											<div class="form-group">
+												{{ team_form.submit(class="btn btn-primary btn-block text-white btn-user") }}
+											</div>
 										</form>
 										<img class="rounded-circle mb-3 mt-4" src="assets/img/dogs/image2.jpeg" width="160" height="160"></div>
 								</div>
