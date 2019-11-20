@@ -53,17 +53,32 @@ def profile():
     team_form = TeamForm()
     career_form = CareerForm()
 
+    # Add code for fetching admin-approved teams
     team_form.team_name.choices = [('1', 'Team 1'), ('2', 'Team 2'), ('3', 'Test Team')]
-    if personal_form.validate_on_submit():
-        if form.picture.data:
-            pass
-        pass
-    if team_form.validate_on_submit():
+    if personal_form.submit_personal.data and personal_form.validate_on_submit():
+        print(personal_form.email.data)
+        print(personal_form.first_name.data)
+        print(personal_form.last_name.data)
+    if team_form.submit_team.data and team_form.validate():
         print(team_form.team_name.data)
+    if career_form.submit_career.data and career_form.validate():
+        print(career_form.company_name.data)
+
+    # Name and Profile Picture
+    name = current_user.first_name + " " + current_user.last_name
+    propic = url_for('static' , filename="propics/" + current_user.image_file)
+    # Personal Info Filling
+    personal_form.email.data = current_user.email
     personal_form.first_name.data = current_user.first_name
     personal_form.last_name.data = current_user.last_name
-    title = "Profile of your mom!"
-    return render_template('profile.html', personal_form=personal_form, picture_form=picture_form, team_form=team_form, career_form=career_form, title=title)
+
+    # Career Info Filling
+    career_form.company_name.data = current_user.company
+    career_form.position.data = current_user.position
+    career_form.linked_in.data = current_user.linkedin
+    career_form.other_link.data = current_user.other_link
+
+    return render_template('profile.html', personal_form=personal_form, picture_form=picture_form, team_form=team_form, career_form=career_form, name=name, propic=propic)
 
 '''
 @main.route('/reset_request', methods=['GET', 'POST'])

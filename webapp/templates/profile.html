@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-		<title> {{title}} </title>
+		<title> User: {{ name }} </title>
 		<link rel="stylesheet" href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
@@ -15,7 +14,7 @@
 			<nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
 				<div class="container-fluid d-flex flex-column p-0">
 					<a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-						<div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
+						<div class="sidebar-brand-icon"><i class="fas fa-align-left"></i></div>
 						<div class="sidebar-brand-text mx-3"><span>QTMA</span></div>
 					</a>
 					<hr class="sidebar-divider my-0">
@@ -37,22 +36,14 @@
 								</div>
 							</form>
 							<ul class="nav navbar-nav flex-nowrap ml-auto">
-								<li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-search"></i></a>
-									<div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" role="menu" aria-labelledby="searchDropdown">
-										<form class="form-inline mr-auto navbar-search w-100">
-											<div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-												<div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
-											</div>
-										</form>
-									</div>
-								</li>
 								<li class="nav-item dropdown no-arrow mx-1" role="presentation"></li>
 								<div class="d-none d-sm-block topbar-divider"></div>
 								<li class="nav-item dropdown no-arrow" role="presentation">
-									<div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">Valerie Luna</span><img class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
-										<div
-											class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu"><a class="dropdown-item" role="presentation" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
-											<div class="dropdown-divider"></div><a class="dropdown-item" role="presentation" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a></div>
+									<div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{ name }}</span><img class="border rounded-circle img-profile" src="{{ propic }}"></a>
+										<div class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu">
+											<a class="dropdown-item" role="presentation" href="{{url_for('main.profile')}}"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
+											<div class="dropdown-divider"></div>
+											<a class="dropdown-item" role="presentation" href="{{url_for('main.logout')}}"<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a></div>
 									</div>
 								</li>
 							</ul>
@@ -63,7 +54,8 @@
 						<div class="row mb-3">
 							<div class="col-lg-4">
 								<div class="card mb-3">
-									<div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="assets/img/dogs/image2.jpeg" width="160" height="160">
+									<div class="card-body text-center shadow">
+										<img class="rounded-circle mb-3 mt-4" src="{{ propic }}" width="160" height="160">
 										<div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change Photo</button></div>
 									</div>
 								</div>
@@ -88,10 +80,10 @@
 												{% endif %}
 											</div>
 											<div class="form-group">
-												{{ team_form.submit(class="btn btn-primary btn-block text-white btn-user") }}
+												{{ team_form.submit_team(class="btn btn-primary btn-block text-white btn-user") }}
 											</div>
 										</form>
-										<img class="rounded-circle mb-3 mt-4" src="assets/img/dogs/image2.jpeg" width="160" height="160"></div>
+										<img class="rounded-circle mb-3 mt-4" src=" {{propic}}" width="160" height="160"></div>
 								</div>
 							</div>
 							<div class="col-lg-8">
@@ -132,21 +124,60 @@
 												<p class="text-primary m-0 font-weight-bold">Personal Info</p>
 											</div>
 											<div class="card-body">
-												<form>
+												<form method="POST" action="">
+													{{ personal_form.hidden_tag() }}
 													<div class="form-row">
 														<div class="col">
-															<div class="form-group"><label for="email"><strong>Email Address</strong></label><input class="form-control" type="email" placeholder="user@example.com" name="email"></div>
+															<div class="form-group">
+																<label for="email"><strong>Email Address</strong></label>
+																{% if personal_form.email.errors %}
+																{{ personal_form.email(class="form-control form-control-user is-invalid") }}
+																<div class="invalid-feedback">
+																	{% for error in personal_form.email.errors %}
+																	<span>{{ error }}</span>
+																	{% endfor %}
+																</div>
+																{% else %}
+																{{ personal_form.email(class="form-control") }}
+																{% endif %}
+															</div>
 														</div>
 													</div>
 													<div class="form-row">
 														<div class="col">
-															<div class="form-group"><label for="first_name"><strong>First Name</strong></label><input class="form-control" type="text" placeholder="John" name="first_name"></div>
+															<div class="form-group">
+																<label for="first_name"><strong>First Name</strong></label>
+																{% if personal_form.first_name.errors %}
+																{{ personal_form.first_name(class="form-control form-control-user is-invalid") }}
+																<div class="invalid-feedback">
+																	{% for error in personal_form.first_name.errors %}
+																	<span>{{ error }}</span>
+																	{% endfor %}
+																</div>
+																{% else %}
+																{{ personal_form.first_name(class="form-control") }}
+																{% endif %}
+															</div>
 														</div>
 														<div class="col">
-															<div class="form-group"><label for="last_name"><strong>Last Name</strong></label><input class="form-control" type="text" placeholder="Doe" name="last_name"></div>
+															<div class="form-group">
+																<label for="last_name"><strong>Last Name</strong></label>
+																{% if personal_form.last_name.errors %}
+																{{ personal_form.last_name(class="form-control form-control-user is-invalid") }}
+																<div class="invalid-feedback">
+																	{% for error in personal_form.last_name.errors %}
+																	<span>{{ error }}</span>
+																	{% endfor %}
+																</div>
+																{% else %}
+																{{ personal_form.last_name(class="form-control") }}
+																{% endif %}
+															</div>
 														</div>
 													</div>
-													<div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
+													<div class="form-group">
+														{{ personal_form.submit_personal(class="btn btn-primary btn text-white btn-user") }}
+													</div>
 												</form>
 											</div>
 										</div>
@@ -155,18 +186,65 @@
 												<p class="text-primary m-0 font-weight-bold">Career Info</p>
 											</div>
 											<div class="card-body" style="height: 332px;">
-												<form>
+												<form method="POST" action="">
+													{{ career_form.hidden_tag() }}
 													<div class="form-row">
 														<div class="col">
-															<div class="form-group"><label for="first_name"><strong>Company Name</strong><br></label><input class="form-control" type="text" placeholder="John" name="first_name"></div>
+															<div class="form-group"><label for="first_name"><strong>Company Name</strong><br></label>
+																{% if career_form.company_name.errors %}
+																{{ career_form.company_name(class="form-control form-control-user is-invalid") }}
+																<div class="invalid-feedback">
+																	{% for error in career_form.company_name.errors %}
+																	<span>{{ error }}</span>
+																	{% endfor %}
+																</div>
+																{% else %}
+																{{ career_form.company_name(class="form-control") }}
+																{% endif %}
+															</div>
 														</div>
 														<div class="col">
-															<div class="form-group"><label for="last_name"><strong>Position</strong><br></label><input class="form-control" type="text" placeholder="Doe" name="last_name"></div>
+															<div class="form-group"><label for="last_name"><strong>Position</strong><br></label>
+																{% if career_form.position.errors %}
+																{{ career_form.position(class="form-control form-control-user is-invalid") }}
+																<div class="invalid-feedback">
+																	{% for error in career_form.position.errors %}
+																	<span>{{ error }}</span>
+																	{% endfor %}
+																</div>
+																{% else %}
+																{{ career_form.position(class="form-control") }}
+																{% endif %}
+															</div>
 														</div>
 													</div>
-													<div class="form-group"><label for="address"><strong>LinkedIn</strong><br></label><input class="form-control" type="text" placeholder="Sunset Blvd, 38" name="address"></div>
-													<div class="form-group"><label for="address"><strong>Other</strong><br></label><input class="form-control" type="text" placeholder="Sunset Blvd, 38" name="address"></div>
-													<div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button></div>
+													<div class="form-group"><label for="address"><strong>LinkedIn</strong><br></label>
+														{% if career_form.linked_in.errors %}
+														{{ career_form.linked_in(class="form-control form-control-user is-invalid") }}
+														<div class="invalid-feedback">
+															{% for error in career_form.linked_in.errors %}
+															<span>{{ error }}</span>
+															{% endfor %}
+														</div>
+														{% else %}
+														{{ career_form.linked_in(class="form-control") }}
+														{% endif %}
+													</div>
+													<div class="form-group"><label for="address"><strong>Other</strong><br></label>
+														{% if career_form.other_link.errors %}
+														{{ career_form.other_link(class="form-control form-control-user is-invalid") }}
+														<div class="invalid-feedback">
+															{% for error in career_form.other_link.errors %}
+															<span>{{ error }}</span>
+															{% endfor %}
+														</div>
+														{% else %}
+														{{ career_form.other_link(class="form-control") }}
+														{% endif %}
+													</div>
+													<div class="form-group">
+														{{ career_form.submit_career(class="btn btn-primary text-white btn-user") }}
+													</div>
 												</form>
 											</div>
 										</div>
@@ -185,7 +263,7 @@
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-			<script src="{{url_for('static', filename='js/script.min.js')}}"></script>
+			<script src="{{url_for('static', filename='js/backend.min.js')}}"></script>
 	</body>
 
 </html>
