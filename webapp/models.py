@@ -13,11 +13,12 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(15), nullable=False)
     last_name = db.Column(db.String(15), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
+    rank = db.Column(db.Integer, nullable=False, default=0)
     password = db.Column(db.String(60), nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
-    rank = db.Column(db.Integer, nullable=False, default=0)
 
     team = db.Column(db.Integer, default=0) 
+
     company = db.Column(db.String(20), nullable=False, default='QTMA')
     position = db.Column(db.String(20), nullable=False, default='New Hire')
     linkedin = db.Column(db.String(100), nullable=False, default='https://www.linkedin.com')

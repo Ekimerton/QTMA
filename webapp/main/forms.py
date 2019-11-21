@@ -59,7 +59,7 @@ class CareerForm(FlaskForm):
     position = StringField("Position", validators=[InputRequired(),
         Length(max=50)])
     linked_in = StringField("LinkedIn", validators=[InputRequired(),
-        Length(max=50)])
+        Length(max=100)])
     other_link = StringField("Other", validators=[InputRequired()])
     submit_career = SubmitField("Save Settings")
 
